@@ -1,0 +1,58 @@
+
+plugins {
+    id 'java'
+    id 'application'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+group = 'com.example'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // JUnit 5
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+
+    // Hibernate ORM + JPA
+    implementation 'org.hibernate.orm:hibernate-core:6.4.4.Final'
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+
+    // H2 Database
+    runtimeOnly 'com.h2database:h2:2.2.224'
+
+    // JavaFX
+    def javafxVersion = '21.0.2'
+    def os = org.gradle.internal.os.OperatingSystem.current()
+    def platform
+
+    if (os.isWindows()) {
+        platform = 'win'
+    } else if (os.isMacOsX()) {
+        platform = 'mac'
+    } else if (os.isLinux()) {
+        platform = 'linux'
+    } else {
+        throw new GradleException("Unsupported OS: ${os}")
+    }
+
+
+    ['base', 'controls', 'fxml', 'graphics', 'media'].each { mod ->
+        implementation "org.openjfx:javafx-$mod:$javafxVersion:$platform"
+    }
+}
+
+application {
+    mainClass = 'com.example.MainApp'
+}
+
+test {
+    useJUnitPlatform()
+}
