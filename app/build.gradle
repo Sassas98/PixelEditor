@@ -50,9 +50,23 @@ dependencies {
 }
 
 application {
-    mainClass = 'com.example.MainApp'
+    mainClass = 'org.example.MainApp'
 }
 
 test {
     useJUnitPlatform()
+}
+
+run {
+    def osName = org.gradle.internal.os.OperatingSystem.current()
+
+    def platform = ''
+    if (osName.isWindows()) platform = 'win'
+    else if (osName.isLinux()) platform = 'linux'
+    else if (osName.isMacOsX()) platform = 'mac'
+
+    jvmArgs = [
+        "--module-path", configurations.runtimeClasspath.asPath,
+        "--add-modules", "javafx.controls,javafx.fxml"
+    ]
 }
