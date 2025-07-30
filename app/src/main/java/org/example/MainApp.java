@@ -1,25 +1,30 @@
 package org.example;
 
-import org.example.model.MyEntity;
-import org.example.model.persistence.HibernateContext;
+import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
-        HibernateContext<MyEntity> db = new HibernateContext<MyEntity>(MyEntity.class);
-        db.save(new MyEntity("TestName2"));
-        db.load().stream().forEach(System.out::println);
-        db.dispose();
-        Label label = new Label("Hello JavaFX + Hibernate + H2!");
-        primaryStage.setScene(new Scene(label, 400, 200));
-        primaryStage.setTitle("Demo App");
-        primaryStage.show();
+    public void start(Stage stage) {
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/index.fxml"));
+            Parent root = loader.load();
+            //Button btn = (Button) root.lookup("#button");
+            //Label label = (Label) root.lookup("#number");
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("");
+            stage.setResizable(false);
+            stage.show();
+        }catch(IOException e){
+            System.err.println(e.getMessage());
+        }
     }
 
     public static void main(String[] args) {

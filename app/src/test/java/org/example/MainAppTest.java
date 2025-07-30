@@ -1,10 +1,13 @@
 package org.example;
 
-import org.example.model.MyEntity;
+import org.example.controller.PixelHandler;
+import org.example.controller.SimpleColors32PixelHandler;
+import org.example.model.entity.Pixel;
 import org.example.model.persistence.HibernateContext;
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -12,29 +15,23 @@ import org.junit.jupiter.api.TestInstance;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MainAppTest {
 
-    private HibernateContext<MyEntity> db;
+    private PixelHandler handler;
 
     @BeforeAll
     void setupEntityManagerFactory() {
-        db = new HibernateContext<MyEntity>(MyEntity.class, true);
+        HibernateContext<Pixel> db = new HibernateContext<Pixel>(Pixel.class, true);
+        handler = new SimpleColors32PixelHandler(db); 
     }
 
     @AfterAll
     void closeEntityManagerFactory() {
-        db.dispose();
+        handler.dispose();
     }
 
     @Test
     void testPersistAndRetrieveEntity() {
-        MyEntity entity = new MyEntity("JUnitName");
-        db.save(entity);
-
-        Long id = entity.getId();
-        assertNotNull(id);
-
-        // Retrieve
-        MyEntity found = db.load(id);
-        assertNotNull(found);
-        assertEquals("JUnitName", found.getName());
+        assertEquals("white", handler.getColorAt(0, 0));
+        assertTrue(handler.setPixelColor(0, 0, "red"));
+        assertEquals("red", handler.getColorAt(0, 0));
     }
 }

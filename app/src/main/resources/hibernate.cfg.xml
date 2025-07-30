@@ -12,6 +12,6 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Registra la tua entità -->
-        <mapping class="org.example.model.MyEntity"/>
+        <mapping class="org.example.model.entity.Pixel"/>
     </session-factory>
 </hibernate-configuration>
