@@ -1,16 +1,16 @@
 package org.example.controller;
 
 import org.example.model.entity.Pixel;
-import org.example.model.persistence.HibernateContext;
+import org.example.model.persistence.Context;
 import org.example.model.utility.Position2D;
 
 public abstract class SimpleColors2D32PixelHandler implements PixelHandler<Position2D> {
 
     protected static final int MIN = 0, MAX = 31;
 
-    protected HibernateContext<Pixel> db;
+    protected Context<Pixel> db;
 
-    public SimpleColors2D32PixelHandler(HibernateContext<Pixel> db){
+    public SimpleColors2D32PixelHandler(Context<Pixel> db){
         this.db = db;
     }
 

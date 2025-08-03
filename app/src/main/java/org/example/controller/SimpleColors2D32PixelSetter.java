@@ -5,12 +5,12 @@ import java.util.Optional;
 
 import org.example.model.entity.Pixel;
 import org.example.model.entity.PixelColor;
-import org.example.model.persistence.HibernateContext;
+import org.example.model.persistence.Context;
 import org.example.model.utility.Position2D;
 
 public class SimpleColors2D32PixelSetter extends SimpleColors2D32PixelHandler implements PixelSetter<Position2D, PixelColor>{
 
-    public SimpleColors2D32PixelSetter(HibernateContext<Pixel> db){
+    public SimpleColors2D32PixelSetter(Context<Pixel> db){
         super(db);
     }
 

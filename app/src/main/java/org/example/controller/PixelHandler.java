@@ -1,5 +1,7 @@
 package org.example.controller;
 
+import org.example.model.persistence.Disposable;
+
 public interface PixelHandler<P> extends Disposable {
     
     /**

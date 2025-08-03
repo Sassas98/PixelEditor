@@ -6,7 +6,7 @@ import org.hibernate.cfg.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HibernateContext<T> {
+public class HibernateContext<T> implements Context<T> {
 
     private static SessionFactory sessionFactory;
     private final Class<T> clazz;
