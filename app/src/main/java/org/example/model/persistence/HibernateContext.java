@@ -47,6 +47,14 @@ public class HibernateContext<T> {
         }
     }
 
+    public void update(T t) {
+        try (Session session = getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.merge(t);
+            session.getTransaction().commit();
+        }
+    }
+
     public T load(long id) {
         try (Session session = getSessionFactory().openSession()) {
             return session.find(clazz, id);

@@ -2,6 +2,12 @@ package org.example;
 
 import java.io.IOException;
 
+import org.example.controller.SimpleColors2D32PixelGetter;
+import org.example.controller.SimpleColors2D32PixelSetter;
+import org.example.model.entity.Pixel;
+import org.example.model.persistence.HibernateContext;
+import org.example.view.EditorViewHandler;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -50,7 +56,12 @@ public class MainApp extends Application {
             */
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/index.fxml"));
             Parent root = loader.load();
-            //Label label = (Label) root.lookup("#number");
+            HibernateContext<Pixel> db = new HibernateContext<Pixel>(Pixel.class);
+            SimpleColors2D32PixelGetter getter = new SimpleColors2D32PixelGetter(db);
+            EditorViewHandler handler = new EditorViewHandler(root, getter);
+            handler.setUpColorButtons();
+            handler.setUpGrid();
+            getter.dispose();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setTitle("");
