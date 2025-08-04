@@ -34,7 +34,7 @@ public class SimpleColors2D32PixelSetter extends SimpleColors2D32PixelHandler im
      * @param num number to check
      * @return true if the number is wrong
      */
-    private boolean isCoordinateWrong(int num){
+    protected boolean isCoordinateWrong(int num){
         return num < MIN || num > MAX;
     }
 
@@ -43,7 +43,7 @@ public class SimpleColors2D32PixelSetter extends SimpleColors2D32PixelHandler im
      * @param position position where find
      * @return the pixel into the specific position
      */
-    private Pixel getPixel(Position2D position){
+    protected Pixel getPixel(Position2D position){
         List<Pixel> list = db.load();
         Optional<Pixel> op = list.stream().filter(p -> p.getX() == position.x() && p.getY() == position.y()).findFirst();
         return op.isPresent() ? op.get() : null;
