@@ -1,4 +1,3 @@
-
 plugins {
     id 'java'
     id 'application'
@@ -18,6 +17,9 @@ repositories {
 }
 
 dependencies {
+    implementation 'net.sourceforge.plantuml:plantuml:1.2024.5'
+    implementation 'com.thoughtworks.qdox:qdox:2.0.1'
+
     // JUnit 5
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 
@@ -43,7 +45,6 @@ dependencies {
         throw new GradleException("Unsupported OS: ${os}")
     }
 
-
     ['base', 'controls', 'fxml', 'graphics', 'media'].each { mod ->
         implementation "org.openjfx:javafx-$mod:$javafxVersion:$platform"
     }
@@ -59,7 +60,6 @@ test {
 
 run {
     def osName = org.gradle.internal.os.OperatingSystem.current()
-
     def platform = ''
     if (osName.isWindows()) platform = 'win'
     else if (osName.isLinux()) platform = 'linux'
@@ -70,3 +70,30 @@ run {
         "--add-modules", "javafx.controls,javafx.fxml"
     ]
 }
+
+tasks.register("generatePUML", GeneratePumlTask) {
+    group = "documentation"
+    description = "Genera un file PlantUML con tutte le classi"
+
+    inputDir.set(layout.projectDirectory.dir("src/main/java"))
+    outputFile.set(layout.buildDirectory.file("uml/classes.puml"))
+}
+
+tasks.register("renderUML", JavaExec) {
+    group = "documentation"
+    description = "Converte il .puml in PNG con PlantUML"
+    dependsOn("generatePUML")
+
+    classpath = configurations.runtimeClasspath
+    mainClass.set("net.sourceforge.plantuml.Run")
+    args = [
+        layout.buildDirectory.file("uml/classes.puml").get().asFile.absolutePath,
+        "-tpng",
+        "-o", layout.buildDirectory.dir("uml").get().asFile.absolutePath
+    ]
+}
+
+
+
+
+
